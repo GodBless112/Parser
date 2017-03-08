@@ -9,7 +9,8 @@ namespace Parse
 		int a;
 		double b;
 	};
-	auto a = getConfig();
+	
+	//auto a = getConfig();
 	
 }
 #endif // !USER_H
