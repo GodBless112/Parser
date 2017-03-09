@@ -11,7 +11,7 @@ namespace Parse
 	public:
 		friend std::ostream & operator<<(std::ostream &os, const User &us)
 		{
-			os << us.a << "\t" << us.b;
+			os << us.a << "|" << us.b;
 			return os;
 		}
 	};

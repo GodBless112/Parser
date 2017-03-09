@@ -54,17 +54,20 @@ namespace Parse
 			void output() const{\
 				for (int i = 0; i<ParseData.size(); i++)\
 					std::cout << ParseData[i] << std::endl;}\
+			void output(int i) const{\
+				if(i<ParseData.size())\
+					std::cout << ParseData[i];\
+				else\
+					std::cerr << "Error:Index out of range!\n";}\
 		public:\
 			std::vector<name> ParseData;\
 		private:\
 			static Parse::TypeString namestr;\
 	};
-	
 
 //some basic fuction
 	std::vector<std::string> split(std::string str, std::string pattern);	//string split function
 	std::vector<std::string> getConfig();	//code to get type information from a file
-	void read_line(const std::vector<std::string> &v_str, int& lineNum);
 	bool Init();		//初始化生成指向输入类型的指针
 	bool Uninit();		//删除指针
 
@@ -108,12 +111,17 @@ namespace Parse
 	{
 		DECLARE_CLASS(ParserObject)
 	public:
-		ParserObject() {};
+		ParserObject():iLineNum(0) {}
 		virtual ~ParserObject() {};
 		virtual bool addData(const std::string &str) { return true; };
 		virtual void output() const {};
+		virtual void output(int i) const {};
+		int getLine() const { return iLineNum; }
 		static bool Register(ClassInfo *ci);
 		static ParserObject* CreateObject(const std::string &className);
+		friend void read_line(const std::vector<std::string> &v_str, int &lineNum);
+	private:
+		int iLineNum;
 	};
 
 //定义分割类

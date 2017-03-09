@@ -42,7 +42,7 @@ namespace Parse
 		return config;
 	}
 	//识别一行数据
-	void read_line(const std::vector<std::string> &v_str, int& lineNum)
+	void Parse::read_line(const std::vector<std::string>& v_str, int &lineNum)
 	{
 		lineNum++;
 		if (v_str.size() == v_TypeConfig.size())
@@ -51,11 +51,13 @@ namespace Parse
 			{
 				if (!v_pParseObject[i]->addData(v_str[i]))
 					std::cout << "error 2: empty string\n";
+				v_pParseObject[i]->iLineNum++;
 			}
 		}
 		else
 			std::cout << "error 3: row " << lineNum << " lack data" << std::endl;
 	}
+	
 	//初始化
 	bool Init()
 	{
