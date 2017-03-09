@@ -8,6 +8,15 @@ namespace Parse
 	{
 		int a;
 		double b;
-	};	
+	public:
+		friend std::ostream & operator<<(std::ostream &os, const User &us)
+		{
+			os << us.a << "\t" << us.b;
+			return os;
+		}
+	};
+
+	//反射用户类型，必须
+	REFLECT(User)
 }
 #endif // !USER_H

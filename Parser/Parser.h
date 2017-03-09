@@ -26,8 +26,9 @@ namespace Parse
 	{return &name::ms_classinfo;}
 
 #define IMPLEMENT_CLASS(name) \
-	IMPLEMENT_CLASS_COMMON(name, name::CreateObject) \
-	Parse::ParserObject *name::CreateObject() { return new name; }
+	IMPLEMENT_CLASS_COMMON(Parser_##name, Parser_##name::CreateObject) \
+	Parse::ParserObject *Parser_##name::CreateObject() { return new Parser_##name; }\
+	Parse::TypeString Parser_##name::namestr(#name);
 
 #define IMPLEMENT_CLASS_OTHER(name) \
 	bool Parser_##name::addData(const std::string & str){\
@@ -57,9 +58,7 @@ namespace Parse
 			std::vector<name> ParseData;\
 		private:\
 			static Parse::TypeString namestr;\
-	};\
-	IMPLEMENT_CLASS(Parser_##name)\
-	Parse::TypeString Parser_##name::namestr(#name);
+	};
 	
 
 //some basic fuction
@@ -74,7 +73,12 @@ namespace Parse
 	class ParserObject;		//分割所用基础类，作为抽象基类
 	static std::map<std::string, ClassInfo*> *classInfoMap = NULL;	//map,存放类名和类信息指针
 	typedef ParserObject* (*ObjectConstructorFn)(void);		//函数指针
-	bool Register(ClassInfo *ci);
+//some vaule
+	//extern std::set<std::string> s_TypeStr;			//存放已经生成的类型处理类
+	extern std::vector<std::string> v_TypeConfig;		//存放输入的要分割的类型
+	extern std::vector<ParserObject*> v_pParseObject;	//存放需要分割的类型对应的指针
+	
+	bool Register(ClassInfo *ci);			//注册类的信息
 
 	class TypeString
 	{
@@ -111,9 +115,10 @@ namespace Parse
 		static bool Register(ClassInfo *ci);
 		static ParserObject* CreateObject(const std::string &className);
 	};
-//some vaule
-	//extern std::set<std::string> s_TypeStr;			//存放已经生成的类型处理类
-	extern std::vector<std::string> v_TypeConfig;		//存放输入的要分割的类型
-	extern std::vector<ParserObject*> v_pParseObject;	//存放需要分割的类型对应的指针
+
+//定义分割类
+	REFLECT(int)
+	REFLECT(float)
+	REFLECT(double)
 }
 #endif // !PARSER_H

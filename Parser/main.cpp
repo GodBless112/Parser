@@ -2,16 +2,9 @@
 #include<sstream>
 #include"User.h"
 #include"Parser.h"
-namespace Parse
-{
-	class Parser_int;
-}
+
 int main()
 {
-	auto x = Parse::classInfoMap;
-	auto y = Parse::v_TypeConfig;
-	auto z = Parse::TypeString::s_TypeStr;
-	auto zz = Parse::v_pParseObject;
 	Parse::Init();
 	std::ifstream fin_data;
 	fin_data.open("data.txt");
@@ -33,6 +26,7 @@ int main()
 	}
 	Parse::v_pParseObject[0]->output();
 	Parse::v_pParseObject[1]->output();
+	Parse::Parser_int a;
 	Parse::Uninit();
 	
 	//Code to keep window open

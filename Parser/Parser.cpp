@@ -4,6 +4,7 @@ namespace Parse
 	std::vector<std::string> v_TypeConfig = getConfig();
 	std::vector<ParserObject*> v_pParseObject;
 	std::set<std::string> TypeString::s_TypeStr;
+	//分割字符串
 	std::vector<std::string> split(std::string str, std::string pattern)
 	{
 		std::vector<std::string> ret;
@@ -21,7 +22,7 @@ namespace Parse
 			ret.push_back(str.substr(start));
 		return ret;
 	}
-
+	//获取配置信息
 	std::vector<std::string> getConfig()
 	{
 		std::vector<std::string> config;
@@ -40,7 +41,7 @@ namespace Parse
 		}
 		return config;
 	}
-
+	//识别一行数据
 	void read_line(const std::vector<std::string> &v_str, int& lineNum)
 	{
 		lineNum++;
@@ -55,7 +56,7 @@ namespace Parse
 		else
 			std::cout << "error 3: row " << lineNum << " lack data" << std::endl;
 	}
-
+	//初始化
 	bool Init()
 	{
 		for (int i = 0; i < v_TypeConfig.size(); i++)
@@ -70,19 +71,29 @@ namespace Parse
 		}
 		return true;
 	}
-
+	//退出
 	bool Uninit()
 	{
 		for (int i = 0; i < v_pParseObject.size(); i++)
 			delete v_pParseObject[i];
 		return true;
 	}
-
+	//注册函数信息类
 	bool Parse::Register(ClassInfo * ci)
 	{
 		return ParserObject::Register(ci);
 	}
-	IMPLEMENT_CLASS(ParserObject)
+
+	//基础类ParseObject的类方法
+	Parse::ClassInfo ParserObject::ms_classinfo(("ParseObject"), (Parse::ObjectConstructorFn) ParserObject::CreateObject);
+	Parse::ClassInfo *ParserObject::GetClassInfo() const
+	{
+		return &ms_classinfo; 
+	}
+	Parse::ParserObject *ParserObject::CreateObject() 
+	{
+		return new ParserObject; 
+	}
 	bool ParserObject::Register(ClassInfo * ci)
 	{
 		if (!classInfoMap)
@@ -102,17 +113,17 @@ namespace Parse
 	}
 
 
-//......自定义各种类型的分割类..........
+//......定义各种类型的分割类的类方法..........
 	//int型
-	REFLECT(int)
+	IMPLEMENT_CLASS(int)
 	IMPLEMENT_CLASS_OTHER(int)
 	
 	//float型
-	REFLECT(float)
+	IMPLEMENT_CLASS(float)
 	IMPLEMENT_CLASS_OTHER(float)
 
 	//float型
-	REFLECT(double)
+	IMPLEMENT_CLASS(double)
 	IMPLEMENT_CLASS_OTHER(double)
 	
 }
